@@ -2,20 +2,19 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 )
 
 func main() {
 	port := ":8081"
 	http.HandleFunc("/", handler)
-	fmt.Println("app.gopherhut.com listening on ", port)
+	log.Println("app.gopherhut.com listening on ", port)
 	http.ListenAndServe(port, nil)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path)
-	fmt.Println(r.Host)
+	log.Println(r.Host + r.URL.Path)
 	res := map[string]interface{}{
 		"host": r.Host,
 		"data": map[string]interface{}{
@@ -30,7 +29,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := json.Marshal(&res)
 	if err != nil {
-		fmt.Println("error:", err.Error())
+		log.Println("error:", err.Error())
+		return
 	}
 
 	// w.Header().Set("Host", r.Host)

@@ -1,22 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 )
 
 func main() {
 	port := ":8082"
 	http.HandleFunc("/", statusPageHandler)
-	fmt.Println("status.gopherhut.com listening on ", port)
+	log.Println("status.gopherhut.com listening on ", port)
 	http.ListenAndServe(port, nil)
 }
 
 func statusPageHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("incoming headers")
+	log.Println("incoming headers")
 	for k, v := range r.Header {
-		fmt.Printf("%s:%s\n", k, v)
+		log.Printf("%s:%s\n", k, v)
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
