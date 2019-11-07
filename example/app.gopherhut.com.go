@@ -33,6 +33,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error:", err.Error())
 	}
 
+	// w.Header().Set("Host", r.Host)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(resp)
 }
