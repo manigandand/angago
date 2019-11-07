@@ -2,23 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 )
 
+var angagoConfig *AngaGoConf
+
 func init() {
-	path := "stub/default.conf.yaml"
-	body, err := getBytesForFileOrURL(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	conf, err := decodeConfig(body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("COnf\n%+v\n\n", conf)
+	angagoConfig = getConfigOrDefault()
 }
 
 func main() {

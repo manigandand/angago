@@ -11,6 +11,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
+
 func getBytesForFileOrURL(path string) ([]byte, error) {
 	u, err := url.ParseRequestURI(path)
 	if err == nil && u.Scheme != "" {
