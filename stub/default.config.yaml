@@ -1,0 +1,10 @@
+# apiVersion: api/v1
+# apiNamespace: angago.gopherhut.com
+kind: Domains
+meta:
+  shortName: domains
+tls: false
+domains:
+  app.gopherhut.com: localhost:8081
+  status.gopherhut.com: localhost:8082
+  admin.gopherhut.com: localhost:8083
