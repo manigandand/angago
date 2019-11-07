@@ -10,6 +10,8 @@ WORKDIR /app
 # This require the project to be built first before copying,
 # else docker build will fail
 COPY angago /app/
+COPY stub /app/
+
 EXPOSE 80
 
 # include the conf file location on load?
