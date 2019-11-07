@@ -1,3 +1,6 @@
+package example
+
+const HTML = `
 <!DOCTYPE html>
 <html lang="en" class="gr__githubstatus_com"><head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -699,3 +702,4 @@
   </div>
 
 <div id="cpt-notification-container"></div>
+`
