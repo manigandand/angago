@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  codecov: codecov/codecov@1.0.2
 jobs:
   test:
     docker:
@@ -17,8 +15,6 @@ jobs:
             go tool cover -html=c.out -o coverage.html
             $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken $COVERALLS_REPO_TOKEN
             mv coverage.html /tmp/artifacts
-      - codecov/upload:
-          file:
   build:
     docker:
       - image: circleci/golang:1.12
