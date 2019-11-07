@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -14,6 +14,6 @@ func init() {
 func main() {
 	port := ":80"
 	http.HandleFunc("/", angagoServer)
-	fmt.Println("angago listening on ", port)
+	log.Println("angago listening on ", port)
 	http.ListenAndServe(port, nil)
 }

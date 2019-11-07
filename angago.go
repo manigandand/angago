@@ -1,27 +1,39 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 )
 
 func angagoServer(w http.ResponseWriter, r *http.Request) {
-	targetHost, ok := DomainRegistryMap[r.Host]
-	if !ok {
+	targetURL, err := angagoConfig.TargetURL(r.Host)
+	if err != nil {
+		res := map[string]interface{}{
+			"host": r.Host,
+			"meta": map[string]interface{}{
+				"status":      http.StatusText(http.StatusBadRequest),
+				"status_code": http.StatusBadRequest,
+				"error":       err.Error(),
+			},
+		}
 
+		resp, err := json.Marshal(&res)
+		if err != nil {
+			log.Println("error:", err.Error())
+			return
+		}
+
+		// w.Header().Set("Host", r.Host)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(resp)
+		return
 	}
 
-	scheme := "http"
-	if r.TLS != nil {
-		scheme = "https"
-	}
-
-	fmt.Println("tls", r.TLS)
-	fmt.Printf("%s%s\n", scheme, r.URL.Host)
-	fmt.Printf("%s%s\n", scheme, r.Host)
-	angagoProxy(w, r, targetHost)
+	log.Printf("Proxying the Host %s to %s\n", r.Host, targetURL)
+	angagoProxy(w, r, angagoConfig.AbsTargetURL(targetURL))
 }
 
 // angagoProxy Serve a reverse proxy for a given url

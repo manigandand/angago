@@ -1,7 +1,18 @@
 package main
 
+import (
+	"errors"
+	"fmt"
+	"sync"
+)
+
+var validResurcesMap = map[string]bool{
+	"domains": true,
+}
+
 // AngaGoConf holds the reverse proxy configuration
 type AngaGoConf struct {
+	mu           sync.Mutex
 	APIVersion   string `yaml:"apiVersion" json:"api_version"`
 	APINamespace string `yaml:"apiNamespace" json:"api_namespace"`
 	Kind         string `yaml:"kind" json:"kind"`
@@ -12,13 +23,24 @@ type AngaGoConf struct {
 	Domains map[string]string `yaml:"domains" json:"domains"`
 }
 
-var validResurcesMap = map[string]bool{
-	"domains": true,
+// TargetURL returns target proxy url
+func (a *AngaGoConf) TargetURL(host string) (string, error) {
+	a.mu.Lock()
+	targetURL, ok := a.Domains[host]
+	if !ok {
+		a.mu.Unlock()
+		return "", errors.New("invalid domain")
+	}
+	a.mu.Unlock()
+	return targetURL, nil
 }
 
-// DomainRegistryMap ...
-var DomainRegistryMap = map[string]string{
-	"app.gopherhut.com":    "http://localhost:8081",
-	"status.gopherhut.com": "http://localhost:8082",
-	"admin.gopherhut.com":  "http://localhost:8083",
+// AbsTargetURL appends a valid scheme with targetURL based on configuration
+func (a *AngaGoConf) AbsTargetURL(targetURL string) string {
+	scheme := "http"
+	if a.TLS {
+		scheme = "https"
+	}
+
+	return fmt.Sprintf("%s://%s", scheme, targetURL)
 }
