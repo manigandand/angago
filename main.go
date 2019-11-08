@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"github.com/manigandand/angago/config"
 )
 
 var angagoConfig *AngaGoConf
@@ -12,7 +14,7 @@ func init() {
 }
 
 func main() {
-	port := ":80"
+	port := ":" + config.Port
 	http.HandleFunc("/", angagoServer)
 	log.Println("angago listening on ", port)
 	http.ListenAndServe(port, nil)

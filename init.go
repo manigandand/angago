@@ -3,32 +3,29 @@ package main
 import (
 	"log"
 	"os"
-	"path/filepath"
+
+	"github.com/manigandand/angago/config"
+	"github.com/manigandand/angago/util"
 )
 
 func getConfigOrDefault() *AngaGoConf {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-	configFilePath, _ := filepath.Abs(home + "/.angago/config.yaml")
-	isFileExist := fileExists(configFilePath)
+	isFileExist := util.FileExists(config.AngagoConfigPath)
 	if !isFileExist {
-		return loadFromDefault(home, configFilePath)
+		return loadFromDefault(config.Home, config.AngagoConfigPath)
 	}
 
 	// load from the file
-	body, err := getBytesForFileOrURL(configFilePath)
+	body, err := getBytesForFileOrURL(config.AngagoConfigPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	config, err := decodeConfig(body)
+	angagoconfig, err := decodeConfig(body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("configuration loaded...")
-	return config
+	log.Printf("configuration loaded from %s...\n", config.AngagoConfigPath)
+	return angagoconfig
 }
 
 func loadFromDefault(home, configFilePath string) *AngaGoConf {
