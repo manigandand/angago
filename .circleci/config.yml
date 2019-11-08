@@ -13,7 +13,8 @@ jobs:
       - run:
           command: |
             go test -v -cover -race -coverprofile=coverage.out
-            $GOPATH/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_REPO_TOKEN
+            echo $CODECOV_TOKEN
+            $GOPATH/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$CODECOV_TOKEN
   build:
     working_directory: ~/go/src/github.com/manigandand/angago
     docker:

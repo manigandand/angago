@@ -2,7 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/manigandand/angago/tree/master.svg?style=shield)](https://circleci.com/gh/manigandand/angago/tree/master)
 [![Coverage Status](https://img.shields.io/codecov/c/gh/manigandand/angago.svg?logo=codecov&style=for-the-badge)](https://codecov.io/gh/manigandand/angago)
-[![](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/manigandand/angago)
+
+<!-- [![](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/manigandand/angago) -->
+
 [![License](https://img.shields.io/badge/license-MIT%20License-blue.svg)](https://github.com/manigandand/angago/blob/master/LICENSE)
 
 angago(anga po/அங்க போ) means Go there.
