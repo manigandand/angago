@@ -36,7 +36,7 @@ func GetAllEnv() {
 	mustEnv("ANGAGO_CONFIG_PATH", &AngagoConfigPath, DefaultAngagoConfigPath)
 
 	if !filepath.IsAbs(AngagoConfigPath) || !util.FileExists(AngagoConfigPath) {
-		log.Printf("the given ANGAGO_CONFIG_PATH=%s is not absolute path or invalid, using default value %s\n",
+		log.Printf("the given ANGAGO_CONFIG_PATH=%s is not absolute path or file not found, using default value %s\n",
 			AngagoConfigPath, DefaultAngagoConfigPath)
 	}
 }

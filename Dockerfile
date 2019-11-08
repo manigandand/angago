@@ -12,6 +12,11 @@ WORKDIR /app
 COPY angago /app/
 COPY stub /app/stub
 
+# Load ENV
+ENV ENV prod
+ENV PORT 80
+ENV ANGAGO_CONFIG_PATH "/root/.angago/config.yaml"
+
 EXPOSE 80
 
 # include the conf file location on load?
