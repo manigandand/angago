@@ -1,6 +1,6 @@
-package example
+package main
 
-const HTML = `
+const html = `
 <!DOCTYPE html>
 <html lang="en" class="gr__githubstatus_com"><head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
