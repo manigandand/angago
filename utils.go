@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"gopkg.in/yaml.v2"
@@ -16,7 +17,10 @@ func getBytesForFileOrURL(path string) ([]byte, error) {
 	if err == nil && u.Scheme != "" {
 		return getBytesFromURL(path)
 	}
-
+	ext := filepath.Ext(path)
+	if strings.TrimSpace(ext) == "" || ext != "yaml" {
+		return nil, errors.New("unsupported file type, supports only yaml as of now")
+	}
 	if _, err := os.Stat(path); err != nil {
 		return nil, err
 	}
