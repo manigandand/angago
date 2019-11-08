@@ -10,7 +10,7 @@ WORKDIR /app
 # This require the project to be built first before copying,
 # else docker build will fail
 COPY angago /app/
-COPY stub /app/
+COPY stub /app/stub
 
 EXPOSE 80
 
