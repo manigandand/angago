@@ -36,7 +36,7 @@ jobs:
           name: Save image to an archive
           command: |
             mkdir docker-image
-            docker save -o docker-image/image.tar $FULL_IMAGE_NAME
+            docker save -o docker-image/image.tar $ANGAGO_IMAGE_NAME
       - persist_to_workspace:
           root: .
           paths:
