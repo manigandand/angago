@@ -12,7 +12,7 @@ Localhost Proxy Tunnel(reverse proxy).
 angago is small localhost proxy tunnel(reverse proxy) which routes to different
 application servers based on **request** `Host/Hostname` from [local DNS](#local-dns).
 
-angago determines the **target url** to proxy based on the simple [yaml configuration](angago-configuration).
+angago determines the **target url** to proxy based on the simple [yaml configuration](#angago-configuration).
 It's a simple `map[string]string`.
 
 ```go

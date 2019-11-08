@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   test:
+    working_directory: ~/go/src/github.com/manigandand/angago
     docker:
       - image: circleci/golang:1.12
     steps:
@@ -11,11 +12,10 @@ jobs:
             go get github.com/mattn/goveralls
       - run:
           command: |
-            go test -covermode=count -coverprofile=c.out
-            go tool cover -html=c.out -o coverage.html
-            $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken $COVERALLS_REPO_TOKEN
-            mv coverage.html /tmp/artifacts
+            go test -v -cover -race -coverprofile=coverage.out
+            $GOPATH/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_REPO_TOKEN
   build:
+    working_directory: ~/go/src/github.com/manigandand/angago
     docker:
       - image: circleci/golang:1.12
     steps:
@@ -41,6 +41,7 @@ jobs:
           paths:
             - docker-image
   deploy:
+    working_directory: ~/go/src/github.com/manigandand/angago
     docker:
       - image: circleci/golang:1.12
     steps:
