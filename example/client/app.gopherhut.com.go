@@ -10,7 +10,9 @@ func main() {
 	port := ":8081"
 	http.HandleFunc("/", handler)
 	log.Println("app.gopherhut.com listening on ", port)
-	http.ListenAndServe(port, nil)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -35,5 +37,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	// w.Header().Set("Host", r.Host)
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(resp)
+	if _, err := w.Write(resp); err != nil {
+		log.Fatal(err.Error())
+	}
 }
