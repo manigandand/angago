@@ -10,7 +10,9 @@ func main() {
 	port := ":8082"
 	http.HandleFunc("/", statusPageHandler)
 	log.Println("status.gopherhut.com listening on ", port)
-	http.ListenAndServe(port, nil)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func statusPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +23,9 @@ func statusPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 	tmpl := template.Must(template.New("status-page").Parse(statusPageHTML))
-	tmpl.Execute(w, nil)
+	if err := tmpl.Execute(w, nil); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 const statusPageHTML = `

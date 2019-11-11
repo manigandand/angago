@@ -17,5 +17,7 @@ func main() {
 	port := ":" + config.Port
 	http.HandleFunc("/", angagoServer)
 	log.Println("angago listening on ", port)
-	http.ListenAndServe(port, nil)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal(err.Error())
+	}
 }

@@ -11,24 +11,9 @@ import (
 func angagoServer(w http.ResponseWriter, r *http.Request) {
 	targetURL, err := angagoConfig.TargetURL(r.Host)
 	if err != nil {
-		res := map[string]interface{}{
-			"host": r.Host,
-			"meta": map[string]interface{}{
-				"status":      http.StatusText(http.StatusNotFound),
-				"status_code": http.StatusNotFound,
-				"error":       err.Error(),
-			},
+		if err := respondFail(w, r, err); err != nil {
+			log.Println(err.Error())
 		}
-
-		resp, err := json.Marshal(&res)
-		if err != nil {
-			log.Println("error:", err.Error())
-			return
-		}
-		w.WriteHeader(http.StatusNotFound)
-		// w.Header().Set("Host", r.Host)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(resp)
 		return
 	}
 
@@ -50,4 +35,27 @@ func angagoProxy(w http.ResponseWriter, r *http.Request, target string) {
 	r.Header.Set("X-Forwarded-Host", r.Header.Get("Host"))
 
 	proxy.ServeHTTP(w, r)
+}
+
+func respondFail(w http.ResponseWriter, r *http.Request, err error) error {
+	res := map[string]interface{}{
+		"host": r.Host,
+		"meta": map[string]interface{}{
+			"status":      http.StatusText(http.StatusNotFound),
+			"status_code": http.StatusNotFound,
+			"error":       err.Error(),
+		},
+	}
+
+	resp, err := json.Marshal(&res)
+	if err != nil {
+		return err
+	}
+	w.WriteHeader(http.StatusNotFound)
+	// w.Header().Set("Host", r.Host)
+	w.Header().Set("Content-Type", "application/json")
+	if _, err := w.Write(resp); err != nil {
+		return err
+	}
+	return nil
 }
