@@ -11,7 +11,9 @@ import (
 func angagoServer(w http.ResponseWriter, r *http.Request) {
 	targetURL, err := angagoConfig.TargetURL(r.Host)
 	if err != nil {
-		respondFail(w, r, err)
+		if err := respondFail(w, r, err); err != nil {
+			log.Println(err.Error())
+		}
 		return
 	}
 
@@ -35,7 +37,7 @@ func angagoProxy(w http.ResponseWriter, r *http.Request, target string) {
 	proxy.ServeHTTP(w, r)
 }
 
-func respondFail(w http.ResponseWriter, r *http.Request, err error) {
+func respondFail(w http.ResponseWriter, r *http.Request, err error) error {
 	res := map[string]interface{}{
 		"host": r.Host,
 		"meta": map[string]interface{}{
@@ -47,14 +49,13 @@ func respondFail(w http.ResponseWriter, r *http.Request, err error) {
 
 	resp, err := json.Marshal(&res)
 	if err != nil {
-		log.Println("error:", err.Error())
-		return
+		return err
 	}
 	w.WriteHeader(http.StatusNotFound)
 	// w.Header().Set("Host", r.Host)
 	w.Header().Set("Content-Type", "application/json")
 	if _, err := w.Write(resp); err != nil {
-		log.Println("error:", err.Error())
+		return err
 	}
-	return
+	return nil
 }
